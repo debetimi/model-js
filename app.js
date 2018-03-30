@@ -2,6 +2,7 @@
 
 (function () {
 
+    var hasExternalReference = /^\=.*xls[xm]?\].*!/;
     var hasLocalReference = /\=.*[a-zA-Z]+[0-9]+/;
     var hasForeignReference = /\=.*['].*[']![a-zA-Z]+[0-9]+/;
     var hasConstantFormula = /\=[0-9]?.*[a-zA-Z]+[0-9]?\(.*\)/;
@@ -15,8 +16,12 @@
 
         if (isNaN(formula)) {
 
-            // If cell contains foreign reference 
-            if (hasForeignReference.test(formula)) {
+            // If cell contains reference outside of file
+            if (hasExternalReference.test(formula)) {
+                cell.format.font.color = "red";
+            }
+            // If cell contains reference to different sheet
+            else if (hasForeignReference.test(formula)) {
                 cell.format.font.color = "green";
             }
 
