@@ -1,0 +1,5 @@
+*.swp
+assets/*
+certs/*
+function-file/*
+node_modules/*
