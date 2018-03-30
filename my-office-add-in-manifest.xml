@@ -16,7 +16,7 @@
   <ProviderName>Timi Okah</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
   <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
-  <DisplayName DefaultValue="Modeling.JS" />
+  <DisplayName DefaultValue="My Office Add-in" />
   <Description DefaultValue="A task pane add-in for Excel"/>
 
   <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
