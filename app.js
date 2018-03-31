@@ -12,7 +12,6 @@
     };
 
     NumberFormatter.prototype.getNextFormat = function (numberFormat) {
-
         let allFormatsMatch = true;
         const firstFormat = numberFormat[0][0];
 
@@ -34,7 +33,7 @@
     };
 
 
-    var ColorFormatter = {
+    var colorFormatter = {
 
         regExpToColor: [[/^\=.*xls[xm]?\].*!/, "red"],
                         [/^\=.*\$?[a-zA-Z]+\$?[0-9]+/, "green"],
@@ -42,7 +41,6 @@
                         [/^\=/, "blue"]],
 
         formatCell: function (cell, formula) {
-
             if (formula === "") {
                 // empty string
                 return; 
@@ -65,7 +63,7 @@
         // Calls formatCell on all elements in the range 
         processRange: function (range) {
             var formulas = range.formulas;
-            for (let i = 0; i < formula.length; i++) {
+            for (let i = 0; i < formulas.length; i++) {
                 for (let j = 0; j < formulas[0].length; j++) {
                     this.formatCell(range.getCell(i,j), formulas[i][j]);
                 }
@@ -85,7 +83,7 @@
 
             return context.sync(usedRange)
                 .then(function (ranged) {
-                    ColorFormatter.processRange(ranged);
+                    colorFormatter.processRange(ranged);
                 })
                 .then(function() {
                     let t1 = performance.now();
