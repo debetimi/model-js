@@ -108,6 +108,31 @@
                       <FunctionName>fixColor</FunctionName>
                   </Action>
                 </Control>
+                <Icon>
+                  <bt:Image size="16" resid="Contoso.tpicon_16x16" />
+                  <bt:Image size="32" resid="Contoso.tpicon_32x32" />
+                  <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                </Icon>
+
+                <Control xsi:type="Button" id="Contoso.TaskpaneButton3">
+                  <Label resid="Contoso.ToggleButton.Label" />
+                  <Supertip>
+                    <!-- ToolTip title. resid must point to a ShortString resource. -->
+                    <Title resid="Contoso.ToggleButton.Label" />
+                    <!-- ToolTip description. resid must point to a LongString resource. -->
+                    <Description resid="Contoso.FixColorButton.Tooltip" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="Contoso.tpicon_16x16" />
+                    <bt:Image size="32" resid="Contoso.tpicon_32x32" />
+                    <bt:Image size="80" resid="Contoso.tpicon_80x80" />
+                  </Icon>
+
+                  <!-- This is what happens when the command is triggered (E.g. click on the Ribbon). Supported actions are ExecuteFunction or ShowTaskpane. -->
+                  <Action xsi:type="ExecuteFunction">
+                      <FunctionName>toggleFormats</FunctionName>
+                  </Action>
+                </Control>
               </Group>
 
               <Group id="Contoso.Group2">
@@ -162,6 +187,7 @@
       <bt:ShortStrings>
         <bt:String id="Contoso.TaskpaneButton.Label" DefaultValue="Debugger" />
         <bt:String id="Contoso.FixColorButton.Label" DefaultValue="Fix Colors" />
+        <bt:String id="Contoso.ToggleButton.Label" DefaultValue="Toggle Formats" />
         <bt:String id="Contoso.Tab.Label" DefaultValue="ModelJS" />
         <bt:String id="Contoso.Group1Label" DefaultValue="ModelJS" />
         <bt:String id="Contoso.Group2Label" DefaultValue="Debug" />

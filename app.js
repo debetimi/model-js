@@ -96,7 +96,7 @@
         }
     }
 
-// Fixes color formatting on current spreadsheet
+    // Fixes color formatting on current spreadsheet
     function colorize() {
         var t0 = performance.now();
         Excel.run(function (context) {
@@ -140,5 +140,4 @@
             $('#toggle-format').click(toggleNumberFormat);
         });
     };
-
 })();
