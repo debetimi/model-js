@@ -2,94 +2,71 @@
 
 
     // Object for Formatting Numbers
-    var NumberFormatter = {
+    let NumberFormatter = function () {
 
-        formats: ['_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)',
-                    '_($* #,##0_);_(* (#,##0);_($* "-"_);_(@_)',
+        this.formats = ['_(* #,##0_);_(* (#,##0);_(* "-"_);_(@_)',
+                '_($* #,##0_);_(* (#,##0);_($* "-"_);_(@_)',
                     '#,##0.0%_);(#,##0.0%)',
-                    '#,##0.0x',
-                    'general'],
+                '#,##0.0x',
+                'general'];
+    };
 
-        getNextFormat: function (numberFormat) {
+    NumberFormatter.prototype.getNextFormat = function (numberFormat) {
 
-            var x = numberFormat.length;
-            var y = numberFormat[0].length;
-            
-            var allFormatsMatch = true;
-            var nextFormat = numberFormat[0][0];
+        let allFormatsMatch = true;
+        const firstFormat = numberFormat[0][0];
 
-            for (var i = 0; i < x; i++) {
-                for (var j = 0; j < y; j++) {
-                    if (nextFormat !== numberFormat[i][j]) {
-                        allFormatsMatch = false;
-                        break;
-                    }
+        for (let i = 0; i < numberFormat.length; i++) {
+            for (let j = 0; j < numberFormat[0].length; j++) {
+                if (firstFormat !== numberFormat[i][j]) {
+                    allFormatsMatch = false;
+                    break;
                 }
             }
+        }
 
-            if (!allFormatsMatch) {
-                return nextFormat;
-            } else {
-                var index = this.formats.indexOf(nextFormat);
-                if (index === -1) {
-                    return this.formats[0];
-                } else {
-                    return this.formats[(index + 1) % this.formats.length];
-                }
-            }
+        if (!allFormatsMatch) {
+            return firstFormat;
+        } else {
+            let index = this.formats.indexOf(firstFormat);
+            return this.formats[(index + 1) % this.formats.length];
         }
     };
 
 
     var ColorFormatter = {
 
-        formatCell: function (cell, formula) {
+        regExpToColor: [[/^\=.*xls[xm]?\].*!/, "red"],
+                        [/^\=.*\$?[a-zA-Z]+\$?[0-9]+/, "green"],
+                        [/^\=.*!\$?[a-zA-Z]+\$?[0-9]+/, "black"],
+                        [/^\=/, "blue"]],
 
-            var hasExternalReference = /^\=.*xls[xm]?\].*!/;
-            var hasLocalReference = /^\=.*[a-zA-Z]+[0-9]+/;
-            var hasForeignReference = /^\=.*!\$?[a-zA-Z]+\$?[0-9]+/;
-            var hasConstantFormula = /^\=/;
+        formatCell: function (cell, formula) {
 
             if (formula === "") {
                 // empty string
                 return; 
             } 
 
-            if (isNaN(formula)) {
-
-                // If cell contains reference outside of file
-                if (hasExternalReference.test(formula)) {
-                    cell.format.font.color = "red";
+            // Cell is a number
+            if (!isNaN(formula)) {
+                cell.format.font.color = "blue";
+                return;
+            }
+            
+            for (let i = 0; i < this.regExpToColor.length; i++) {
+                if (this.regExpToColor[i][0].test(formula)) {
+                    cell.format.font.color = this.regExpToColor[i][1];
+                    return;
                 }
-                // If cell contains reference to different sheet
-                else if (hasForeignReference.test(formula)) {
-                    cell.format.font.color = "green";
-                }
-
-                // If cell contains local reference formula
-                else if (hasLocalReference.test(formula)) {
-                    cell.format.font.color = "black";
-                }
-
-                // If cell contains a constant formula 
-                // e.g. =1 + SUM(10, 30)
-                else if (hasConstantFormula.test(formula)) {
-                    cell.format.font.color = "blue";
-                }
-            } else {
-                // If here, cell is a hardcoded number
-                cell.format.font.color ="blue";
             }
         },
 
         // Calls formatCell on all elements in the range 
         processRange: function (range) {
             var formulas = range.formulas;
-            var x = formulas.length;
-            var y = formulas[0].length;
-
-            for (var i = 0; i < x; i++) {
-                for (var j = 0; j < y; j++) {
+            for (let i = 0; i < formula.length; i++) {
+                for (let j = 0; j < formulas[0].length; j++) {
                     this.formatCell(range.getCell(i,j), formulas[i][j]);
                 }
             }
@@ -111,7 +88,7 @@
                     ColorFormatter.processRange(ranged);
                 })
                 .then(function() {
-                    var t1 = performance.now();
+                    let t1 = performance.now();
                     console.log("Runtime: " + (t1 - t0) + "ms");
                 });
         }).catch(function (error) {
@@ -125,9 +102,9 @@
     function toggleNumberFormat() {
         Excel.run(function (context) {
             var range = context.workbook.getSelectedRange();
-            range.load('numberFormat');
+            range.load("numberFormat");
             return context.sync(range).then(function(range) {
-                range.numberFormat = NumberFormatter.getNextFormat(range.numberFormat);
+                range.numberFormat = new NumberFormatter().getNextFormat(range.numberFormat);
             });
         });
     }
@@ -136,8 +113,8 @@
     //Assign function to DOM element
     Office.initialize = function (reason) {
         $(document).ready(function () {
-            $('#set-color').click(colorize);
-            $('#toggle-format').click(toggleNumberFormat);
+            $("#set-color").click(colorize);
+            $("#toggle-format").click(toggleNumberFormat);
         });
     };
 })();
