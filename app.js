@@ -46,11 +46,11 @@
         formatCell: function (cell, formula) {
 
             var hasExternalReference = /^\=.*xls[xm]?\].*!/;
-            var hasLocalReference = /\=.*[a-zA-Z]+[0-9]+/;
-            var hasForeignReference = /\=.*![a-zA-Z]+[0-9]+/;
-            var hasConstantFormula = /\=[0-9]?.*[a-zA-Z]+[0-9]?\(.*\)/;
+            var hasLocalReference = /^\=.*[a-zA-Z]+[0-9]+/;
+            var hasForeignReference = /^\=.*!\$?[a-zA-Z]+\$?[0-9]+/;
+            var hasConstantFormula = /^\=/;
 
-            if (!formula) {
+            if (formula === "") {
                 // empty string
                 return; 
             } 
