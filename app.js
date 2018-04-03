@@ -36,8 +36,8 @@
     var colorFormatter = {
 
         regExpToColor: [[/^\=.*xls[xm]?\].*!/, "red"],
-                        [/^\=.*\$?[a-zA-Z]+\$?[0-9]+/, "green"],
-                        [/^\=.*!\$?[a-zA-Z]+\$?[0-9]+/, "black"],
+                        [/^\=.*!\$?[a-zA-Z]+\$?[0-9]+/, "green"],
+                        [/^\=.*\$?[a-zA-Z]+\$?[0-9]+/, "black"],
                         [/^\=/, "blue"]],
 
         formatCell: function (cell, formula) {
@@ -60,7 +60,7 @@
             }
         },
 
-        // Calls formatCell on all elements in the range 
+        // Callsx formatCell on all elements in the range 
         processRange: function (range) {
             var formulas = range.formulas;
             for (let i = 0; i < formulas.length; i++) {
